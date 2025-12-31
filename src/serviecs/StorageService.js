@@ -9,4 +9,16 @@ export class StorageService {
         }
         this.#storageName = storageName;
     }
+    //스토리지 데이터 조회
+    #getStorageData(){
+
+    }
+    getItem(id){
+        const json = localStorage.getItem(this.#storageName);
+        if(json) {
+            const jsonData = JSON.parse(json);
+            return jsonData.items.find(item => item.id === id);
+        }
+        return undefined;
+    }
 }
