@@ -5,7 +5,7 @@
     붕어빵틀 vs 붕어빵
 */
 //#: 은닉화, 캡슐화
-export class StorageService {
+class StorageService {
     #storageName; //전역변수(속성), #이 붙으면 private(비공개) 외부에서 접근할 수 없는 속성 
     #lastId;
 
@@ -16,7 +16,28 @@ export class StorageService {
             throw new Error('스토리지 이름을 입력해주세요.');
         }
         this.#storageName = storageName;
-        this.#lastId = 1;
+        // [수정] 1로 고정하는 대신, 기존 데이터에서 다음 ID를 찾아옵니다.
+        this.#lastId = this.#getNextId();
+    }
+    // [추가] 다음 ID를 계산하는 프라이빗 메서드
+    #getNextId() {
+        const storageData = this.#getStorageData(); // 기존 데이터 { "1": {...}, "2": {...} }
+        const keys = Object.keys(storageData); // ID 문자열 배열 ["1", "2"]
+        
+        if (keys.length === 0) {
+            return 1; // 데이터가 없으면 1부터 시작
+        }
+
+        // 키값(ID) 중 최대값을 찾아 숫자형으로 변환 후 +1
+        const maxId = Math.max(...keys.map(key => Number(key))); //...은 주머니 속의 내용물들을 바닥에 촤르르 펼쳐서 보여준 것
+        /*
+        const numbers = [10, 20, 30];
+        // 1. 그냥 넣었을 때
+        console.log(numbers);    // 출력: [10, 20, 30] (배열 형태)
+        // 2. ...을 써서 전개했을 때
+        console.log(...numbers); // 출력: 10 20 30 (숫자만 낱개로 나열됨)
+        */
+        return maxId + 1;
     }
 
     // 스토리지 데이터 조회 p.161
@@ -36,14 +57,30 @@ export class StorageService {
     addItem(item) {
         const storageData = this.#getStorageData();
         item.id = this.#lastId
-        storageData[this.#lastId++] = item;
+        storageData[this.#lastId] = item;
         this.#saveStorageData(storageData);
+        // [수정] 저장이 성공하면 다음을 위해 ID 1 증가
+        this.#lastId++;
     }
 
     // 전체 항목 조회
-    getItems(id) {
-        return this.#getStorageData();
+
+    getItems() {
+    return this.#getStorageData(); // 인자 없이 전체 데이터를 리턴
+    }
+    // 개별 조회가 따로 필요하다면 추가
+    getItem(id) {
+        const storageData = this.#getStorageData();
+        return storageData[id];
+    }
+
+    delItem(id)    {
+        const storageData = this.#getStorageData();
+        delete storageData[id];
+        this.#saveStorageData(storageData) //삭제하고 나서의 결과값을 다시 업데이트하기 위함
     }
     
-    
 }
+
+const storageService = new StorageService('myMemo'); //'myMemo'라는 이름의 저장 공간을 관리하겠다고 선언. 앞으로 storageService를 통해서 메모를 저장하거나 가져올 수 있습니다.
+export default storageService;
