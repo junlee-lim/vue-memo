@@ -35,6 +35,8 @@ class StorageService {
         // 1. 그냥 넣었을 때
         console.log(numbers);    // 출력: [10, 20, 30] (배열 형태)
         // 2. ...을 써서 전개했을 때
+
+        
         console.log(...numbers); // 출력: 10 20 30 (숫자만 낱개로 나열됨)
         */
         return maxId + 1;
@@ -63,8 +65,6 @@ class StorageService {
         this.#lastId++;
     }
 
-    // 전체 항목 조회
-
     getItems() {
     return this.#getStorageData(); // 인자 없이 전체 데이터를 리턴
     }
@@ -80,6 +80,11 @@ class StorageService {
         this.#saveStorageData(storageData) //삭제하고 나서의 결과값을 다시 업데이트하기 위함
     }
     
+    setItem(item) {
+        const storageData = this.#getStorageData();
+        storageData[item.id] = item;
+        this.#saveStorageData(storageData);
+    }
 }
 
 const storageService = new StorageService('myMemo'); //'myMemo'라는 이름의 저장 공간을 관리하겠다고 선언. 앞으로 storageService를 통해서 메모를 저장하거나 가져올 수 있습니다.

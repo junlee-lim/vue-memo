@@ -36,6 +36,6 @@ const remove = id => {
         </div>
       </div>
     </router-link>
-    <router-link to="/memos/add" class="add btn btn-light">add</router-link>
+    <router-link to="/memos/add" class="add btn btn-light">add</router-link><!--template 안에서 주소값 이동하고 싶을 땐 router-link, 별다른 클릭 없이 주소값 이동하고 싶을 땐 router (*pathvarialbe 값을 가져와야 함 route 사용)-->
   </div>
 </template>

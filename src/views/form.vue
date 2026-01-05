@@ -5,15 +5,21 @@ import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter(); //라우터 객체 주소값 얻기(주소값 이동, 운전기사)
 const route = useRoute(); //라우트 객체 주소값 얻기(PathVariable 값 가져오기, 승차권)
-const state = reactive({
+const state = reactive({ //반응형
     memo: {
         title: '',
         content: ''
     }
 });
 const submit = () => {
-    storageService.addItem(state.memo);
-    alert('saved');
+    if(route.params.id){
+        storageService.setItem(state.memo)
+        alert('edited');
+    }
+    else{
+        storageService.addItem(state.memo);
+        alert('saved');
+    }
     //라우팅 처리(path: '/')로 주소값 이동(화면 전환)
     router.push({
         path: '/'
@@ -39,7 +45,7 @@ onMounted(() => {
         <label for="content" class="form-label">content</label>
         <textarea id="content" v-model="state.memo.content"></textarea>
     </div>
-    <button class="btn btn-primary w-100 py-3">save</button>
+    <button class="btn btn-primary w-100 py-3">{{route.params.id ? '수정' : '저장'}}</button>
 </form>
 </template>
 
