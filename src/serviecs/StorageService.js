@@ -28,7 +28,7 @@ class StorageService {
             return 1; // 데이터가 없으면 1부터 시작
         }
 
-        // 키값(ID) 중 최대값을 찾아 숫자형으로 변환 후 +1
+        // 키값(ID)을 숫자형으로 변환 후 최댓값을 찾아서 +1
         const maxId = Math.max(...keys.map(key => Number(key))); //...은 주머니 속의 내용물들을 바닥에 촤르르 펼쳐서 보여준 것
         /*
         const numbers = [10, 20, 30];
