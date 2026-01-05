@@ -34,9 +34,7 @@ class StorageService {
         const numbers = [10, 20, 30];
         // 1. 그냥 넣었을 때
         console.log(numbers);    // 출력: [10, 20, 30] (배열 형태)
-        // 2. ...을 써서 전개했을 때
-
-        
+        // 2. ...을 써서 전개했을 때    
         console.log(...numbers); // 출력: 10 20 30 (숫자만 낱개로 나열됨)
         */
         return maxId + 1;
